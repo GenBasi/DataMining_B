@@ -187,82 +187,6 @@
 \tableofcontents
 \pagebreak
 
-\section{Sommario}
-
-\begin{itemize}
-    \item \textbf{Introduzione e Recap} (Slides 1--3)
-    \begin{itemize}
-        \item Titolo e overview del corso (Slides 1--2)
-        \item Recap: limiti dei perceptron, necessità di non-linearità, backpropagation e potenza computazionale (Slide 3)
-    \end{itemize}
-
-    \item \textbf{Architettura di un MLP} (Slides 4--14)
-    \begin{itemize}
-        \item Layout di base: input layer, hidden layer, output layer, feedforward (Slide 4)
-        \item Caso template: riconoscimento cifre scritte (MNIST), knowledge base, training/test set (Slides 5--6)
-        \item Descrizione algebrica: vettori di attivazione, matrici dei pesi, preattivazione, funzione di attivazione (Slides 7--9)
-        \item Universal Approximation Theorems: width vs.\ depth (Slide 10)
-        \item Ruolo degli hidden layers: livelli di astrazione, gerarchia di features (Slides 11--14)
-    \end{itemize}
-
-    \item \textbf{Dissecting a Simple MLP --- Il caso XOR} (Slides 15--18)
-    \begin{itemize}
-        \item Struttura della rete XOR: input, pesi $W_1$ e $W_2$, hidden layer, output layer (Slides 15--16)
-        \item Funzione di attivazione sigmoid e funzione SoftMax (Slide 18)
-    \end{itemize}
-
-    \item \textbf{The Forward Step} (Slides 19--23)
-    \begin{itemize}
-        \item Inizializzazione dei pesi (Slide 20)
-        \item Calcolo di $\mathbf{z}_1 = X W_1$ e applicazione della sigmoid: $\mathbf{h}_1 = \sigma(\mathbf{z}_1)$ (Slide 21)
-        \item Calcolo del secondo layer: $\mathbf{z}_2 = \mathbf{h}_1 W_2$ (Slide 22)
-        \item Applicazione della SoftMax all'output: $\mathbf{h}_2 = \text{SoftMax}(\mathbf{z}_2)$ (Slide 23)
-    \end{itemize}
-
-    \item \textbf{Backpropagation --- The Backward Step} (Slides 24--35)
-    \begin{itemize}
-        \item Obiettivo: aggiornamento pesi per minimizzare la loss function (Slide 25)
-        \item Loss function con regolarizzazione Ridge ($\mathcal{L}^2$) (Slide 26)
-        \item Prima backpropagation: $d\mathcal{L}/dW_2$ tramite chain rule (Slides 27--30)
-        \item Calcolo numerico delle tre derivate parziali e aggiornamento di $W_2$ (Slides 29--30)
-        \item Seconda backpropagation: $d\mathcal{L}/dW_1$ con riutilizzo dei gradienti (Slides 31--35)
-    \end{itemize}
-
-    \item \textbf{Applicazione: XOR Operator con MLP} (Slides 36--38)
-    \begin{itemize}
-        \item Costruzione dell'operatore XOR, non linearità necessaria (Slide 37)
-        \item Riferimento al notebook GitHub (Slide 38)
-    \end{itemize}
-
-    \item \textbf{Terminologia e Concetti Generali sugli MLP} (Slides 39--42)
-    \begin{itemize}
-        \item Il Multi Layer Perceptron come ANN più semplice (Slide 39)
-        \item Terminologia: neuroni, layers, pesi (Slides 40--41)
-        \item Knowledge base: training set, test set, validation set (Slide 42)
-    \end{itemize}
-
-    \item \textbf{Supervised Learning Workflow} (Slides 43--50)
-    \begin{itemize}
-        \item Forward pass, cost function, firing dei neuroni (Slide 43)
-        \item Schema classificazione supervisionata: Phase 1 (training) e Phase 2 (inference) (Slide 46)
-        \item Apprendimento per esempi: cost function, ottimizzazione, backpropagation (Slide 47)
-        \item Esempio MNIST: normalizzazione, inizializzazione, training iterativo (Slides 48--50)
-    \end{itemize}
-
-    \item \textbf{Prospettive e Aspetti Avanzati} (Slides 51--56)
-    \begin{itemize}
-        \item Argomenti futuri: architettura, normalizzazione, activation functions, cost function, ottimizzatori (GD, SGD, RMSProp, ADAM), underfitting, overfitting, vanishing gradients (Slide 51)
-        \item Connessioni AI--neuroscienze, riferimento a \textit{A Thousand Brains} (Slide 53)
-        \item Complessità computazionale e regole pratiche (Slides 54--56)
-    \end{itemize}
-\end{itemize}
-
-
-
-
-
-
-\pagebreak
 
 \section{Introduction to Artificial Neural Networks}
 
@@ -270,22 +194,10 @@ The lecture introduces the Multi-Layer Perceptron (MLP), covering its basic arch
 the algebraic description of feed-forward networks, the Universal Approximation Theorems,
 and the role of hidden layers in learning hierarchical representations.
 
-\subsection{What is a Perceptron?}
-To understand Artificial Neural Networks (ANNs), you first need to know what they evolved from: the \textbf{Perceptron}. 
-
-Invented in the late 1950s, a Perceptron is the simplest form of an artificial neuron. It works in three steps:
-\begin{enumerate}
-    \item It takes multiple inputs and multiplies each by a specific \textbf{weight}.
-    \item It sums these weighted inputs together and adds a \textbf{bias} term.
-    \item It passes this sum through a \textbf{Step Function} (a hard threshold). If the sum is above a certain number, it outputs a 1. If it's below, it outputs a 0.
-\end{enumerate}
-
-While a single perceptron is great at acting like a simple logic gate (like an AND or OR gate), it is severely limited. For complex problems, humans had to \textit{manually} figure out the exact weights and biases to make the perceptron output the right answer. It could not learn complex patterns on its own.
-
-\subsubsection{Recap: from Perceptrons to ANNs}
+\subsection{Recap: from Perceptrons to ANNs}
 
 In previous lectures we saw that a single \textbf{perceptron} can implement simple logic gates.
-However, using perceptrons directly for complex computations is cumbersome: every new task requires
+However, using perceptrons directly for complex computations is inefficient: every new task requires
 manual, ad-hoc tuning of the weights and biases.
 
 The key insight is that we can build \textbf{learning algorithms}, i.e.\ Artificial Neural Networks (ANNs),
@@ -306,108 +218,8 @@ Three ingredients were necessary before real progress could be made:
           floating-point operations, which only became feasible with modern hardware (GPUs, TPUs).
 \end{enumerate}
 
-\section{The Birth of Artificial Neural Networks (ANNs)}
-The fundamental breakthrough of ANNs was shifting from \textit{manual tuning} to \textit{automatic learning}. Instead of humans calculating weights, we let an algorithm adjust the weights of thousands of interconnected neurons automatically, based entirely on the data it sees. 
 
-However, to make this jump from a rigid Perceptron to a learning, dynamic ANN, scientists needed three critical ingredients:
-
-\subsection{1. Non-Linearity (The Death of the Step Function)}
-Learning in an algorithm means figuring out the "slope" or "gradient" of an error to know which way to adjust the weights. 
-\begin{itemize}
-    \item \textbf{The Perceptron Problem:} The Step Function is flat everywhere except at its jump, meaning its mathematical derivative is almost always zero. If the derivative is zero, the network receives no feedback on how to improve. A small tweak to a weight either does absolutely nothing, or violently flips the output from 0 to 1.
-    \item \textbf{The ANN Solution:} We replaced the hard Step Function with smooth, differentiable \textbf{Activation Functions} (like the Sigmoid or ReLU). Because they are smooth curves, a tiny adjustment to a weight results in a tiny, predictable change in the output. This allows the network to gradually "slide" down the error curve toward the correct answer.
-\end{itemize}
-
-\subsection{2. Backpropagation}
-Once we had smooth activation functions, we needed a way to apply those gradients across multiple layers of neurons. \textbf{Backpropagation} is simply the algorithm that calculates exactly who is to blame for an error. 
-
-When the network makes a wrong prediction, backpropagation calculates the gradient of the loss (the error) and works backward from the output layer to the input layer. It mathematically dictates exactly how much every single weight and bias in the entire network needs to be adjusted to make a better prediction next time.
-
-\subsection{3. Computational Power}
-The math behind backpropagation and forward passes isn't conceptually difficult, but the sheer volume is staggering. Updating a deep neural network requires billions of matrix multiplications (floating-point operations). The theories for ANNs existed in the 1980s, but it wasn't until modern hardware—specifically \textbf{GPUs (Graphics Processing Units)} and \textbf{TPUs (Tensor Processing Units)}—became available that we had the raw computational muscle to actually train them in a reasonable timeframe.
-
-
-\subsection{From Perceptrons to ANNs}
-Single perceptrons require manual weight tuning, making them impractical for complex tasks. Artificial Neural Networks (ANNs) solve this by automatically learning from data. This evolution required three key breakthroughs:
-\begin{enumerate}
-    \item \textbf{Non-linearity:} Smooth, differentiable activation functions (e.g., Sigmoid, ReLU) allow small weight adjustments to predictably change outputs. This is a strict requirement for gradient-based learning.
-    \item \textbf{Backpropagation:} An efficient algorithm to compute gradients and update weights systematically across all layers.
-    \item \textbf{Computational Power:} Modern hardware (GPUs, TPUs) to handle massive parallel matrix operations.
-\end{enumerate}
-
-\section{Multi-Layer Perceptron (MLP) Architecture}
-A Feed-Forward Neural Network (or MLP) processes information in one direction:
-\textbf{Input Layer} $\rightarrow$ \textbf{Hidden Layer(s)} $\rightarrow$ \textbf{Output Layer}.
-Neurons in a layer do not connect to each other; they only feed their output forward to \textit{all} neurons in the subsequent layer.
-
-\subsection{Example: MNIST Digit Classification}
-\begin{itemize}
-    \item \textbf{Input:} $28 \times 28$ grayscale images, flattened into a $784$-dimensional vector. While 2D spatial layout is implicitly lost, the patterns remain encoded in the vector indices.
-    \item \textbf{Task:} Supervised learning to classify images into one of 10 digits (0-9).
-    \item \textbf{Data Split:} The knowledge base is divided into a \textbf{Training set} (to adjust weights) and a \textbf{Testing set} (to evaluate generalization), where the training set is significantly larger.
-\end{itemize}
-
-\section{The Mathematics of Forward Propagation}
-The core of a neural network is a repeated sequence of linear transformations followed by non-linear activations.
-
-Let $\mathbf{a}^{(h)}$ be the activation vector of layer $h$, $\mathbf{W}^{(h)}$ the weight matrix connecting layer $h$ to $h+1$, and $\mathbf{w}_0^{(h)}$ the bias vector. For the next layer $h+1$, we compute the preactivation and apply the element-wise activation function $\sigma$:
-
-\begin{equation}
-    \mathbf{a}^{(h+1)} = \sigma\left(\mathbf{W}^{(h)} \mathbf{a}^{(h)} + \mathbf{w}_0^{(h)}\right)
-\end{equation}
-
-An entire network is simply a nested composition of these layer-wise operations:
-\begin{equation}
-    \mathbf{O} = \sigma_L\left( \dots \sigma_1\left(\mathbf{W}^{(1)}\mathbf{x} + \mathbf{w}_0^{(1)}\right) \dots \right)
-\end{equation}
-\textit{Takeaway:} Every layer performs a matrix multiplication followed by an element-wise non-linear function.
-
-\section{Universal Approximation Theorem}
-This theorem states that a feed-forward network with a \textbf{single hidden layer} and a non-linear activation function can approximate \textit{any} continuous function, provided it has enough neurons (sufficient width). A similar result holds for deeper networks (sufficient depth).
-
-\textbf{Crucial Data Science Caveat:} This is an \textit{existence} theorem. It guarantees a mathematical solution exists, but it tells us nothing about \textit{how} to find the optimal weights, how many neurons are actually needed, or if gradient descent will successfully converge to that solution.
-
-\section{The Power of Hidden Layers: Feature Hierarchies}
-Deep networks excel because hidden layers learn \textbf{hierarchical representations} of data. 
-\begin{itemize}
-    \item \textbf{Early layers:} Learn basic, low-level features (e.g., edges, pixels).
-    \item \textbf{Middle layers:} Combine basic features into intermediate shapes (e.g., loops, curves).
-    \item \textbf{Output layers:} Combine shapes to recognize complex concepts (e.g., the digit ``8'').
-\end{itemize}
-This layered decomposition allows networks to reuse fundamental primitive patterns across different classes, making them incredibly powerful for complex unstructured data like images, text, and audio.
-
-
-
-
-\pagebreak
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  Lecture 4.1 -- Introduction to ANNs (Slides 1--14)
-%  DMB - Machine Learning, Prof.\ Giuseppe Longo
-%  University of Naples Federico II
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Introduction to Artificial Neural Networks (ANNs)}
-
-These notes cover Lecture 4.1 of the Machine Learning course, delivered on March 12, 2026.
-
-
-%==========================================================
-\subsection{Overview and Recap}
-%==========================================================
-
-The lecture is organized around four main topics:
-(1) dissecting a simple MLP,
-(2) the forward step,
-(3) backpropagation (the backward step), and
-(4) using an MLP as a XOR operator.
-These notes focus on the first part: understanding the architecture of a simple MLP (slides 1--14).
-
-
-
-%==========================================================
-\subsection{Architecture of a Multi-Layer Perceptron}
-%==========================================================
+\subsection{Multi-Layer Perceptron (MLP) Architecture}
 
 \subsubsection{A Simple Layout}
 
@@ -419,8 +231,16 @@ to the \textbf{output layer}. Neurons within the same layer are \emph{not} conne
 each neuron connects only to neurons in the immediately subsequent layer.
 \end{defbox}
 
+     \begin{figure}[H] 
+        \centering\includegraphics[scale=0.4]{6.Feed Forward Network.jpeg}
+        \caption{Feed Forward Network}
+    \captionsetup{font=footnotesize}
+    \end{figure}
+
 In a diagram each circle represents a neuron and each line represents a weighted connection.
 The key properties of this layout are:
+
+  
 
 \begin{itemize}
     \item \textbf{Input layer:} receives the raw data (e.g.\ pixel values of an image). Each neuron
@@ -430,148 +250,64 @@ The key properties of this layout are:
     \item \textbf{Output layer:} produces the final prediction (e.g.\ a class label).
 \end{itemize}
 
-An important detail: the output of each neuron is \emph{unique} --- that is, a neuron produces a
+   
+
+
+An important detail: the output of each neuron is \emph{unique}: that is, a neuron produces a
 single scalar value, and that same value is sent to \emph{all} neurons in the next layer.
 
-%----------------------------------------------------------
-\subsubsection{Template Case: Recognizing Handwritten Digits (MNIST)}
-%----------------------------------------------------------
 
-To make the architecture concrete, consider the classic problem of recognizing handwritten
-digits from the MNIST dataset.
+\subsubsection{The Mathematics of Data Flow (Forward Propagation)}
+A fully connected neural network transforms input data layer by layer. Regardless of how deep the network is, every single hidden layer performs the exact same two-step mathematical operation.
 
-\begin{defbox}{MNIST Classification Problem}
-Given a grayscale image of a handwritten digit (size $28 \times 28$ pixels), classify it into one
-of 10 classes: $\{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$.
-\end{defbox}
+Let $L^h$ be a hidden layer, $\mathbf{a}^{(h)}$ be its activation vector, $\mathbf{W}^{(h)}$ the weight matrix connecting it to the next layer, and $\mathbf{b}^{(h)}$ the bias vector.
 
-The setup is as follows:
+\paragraph*{Step 1: Pre-Activation (Linear Transformation)}.
+For the next layer $h+1$, we first compute the \textbf{pre-activation vector} ($\mathbf{z}$). This is simply the dot product of the weights and the previous layer's activations, plus the bias:
+\begin{equation}
+    \mathbf{z}^{(h+1)} = \mathbf{W}^{(h)} \mathbf{a}^{(h)} + \mathbf{b}^{(h)}
+\end{equation}
+
+\paragraph*{Step 2: Activation (Non-Linearity)}.
+We then apply a differentiable, non-linear \textbf{activation function} ($\sigma$) element-wise to the pre-activation vector to get the final \textbf{activation vector} ($\mathbf{a}$):
+\begin{equation}
+    \mathbf{a}^{(h+1)} = \sigma\!\left(\mathbf{z}^{(h+1)}\right)
+\end{equation}
+
+\begin{figure}[H] 
+    \centering\includegraphics[scale=0.45]{7.neural network scheme.jpeg}
+    \caption{Neural Network scheme}
+\captionsetup{font=footnotesize}
+\end{figure}
+
+\subsubsection{The Network as a Function Composition}
+Because every layer performs these same two steps, an entire deep neural network can be written as one massive nested mathematical function. If $\mathbf{x}$ is our input data, the final output $\mathbf{O}$ is:
+
+\begin{equation}
+    \mathbf{O} = \sigma_L\!\Bigl(\dots \sigma_2\!\bigl(\mathbf{W}^{(2)}\sigma_1\!\bigl(\mathbf{W}^{(1)}\mathbf{x} + \mathbf{b}^{(1)}\bigr) + \mathbf{b}^{(2)}\bigr)\dots\Bigr)
+\end{equation}
+
+\textbf{Why is the Activation Function ($\sigma$) strictly necessary?} \\
+If we removed the non-linear $\sigma$, the network would just be a series of matrix multiplications: $\mathbf{W}^{(3)}(\mathbf{W}^{(2)}(\mathbf{W}^{(1)}\mathbf{x}))$. In linear algebra, multiplying multiple matrices just results in one single new matrix. Therefore, without non-linearity, a 100-layer deep neural network mathematically collapses into a basic linear regression model, entirely losing its ability to learn complex, curved boundaries.
+
+\subsubsection{Network Design: Parameters vs. Hyperparameters}
+When building these networks, a Data Scientist must clearly distinguish between what the machine learns and what the human decides:
 
 \begin{itemize}
-    \item Each image is a $28 \times 28$ matrix of pixel intensities. For the network, this matrix is
-          \textbf{flattened} into a single vector of length $28 \times 28 = 784$. The spatial structure
-          of the image is lost in this flattening, but the information is still present in the
-          784-dimensional vector.
-    \item We have $N$ such images, each paired with its correct label (this is \textbf{supervised learning}).
-          This collection of image--label pairs is called the \textbf{knowledge base} (KB).
-    \item The knowledge base is split into two subsets:
-          \begin{itemize}
-              \item $N'$ images for \textbf{training} (used to adjust weights), and
-              \item $N''$ images for \textbf{testing} (used to evaluate performance),
-          \end{itemize}
-          with $N' + N'' = N$ and typically $N' \gg N''$.
+    \item \textbf{Parameters (Learned by the machine):} The actual numerical values inside the weight matrices ($\mathbf{W}$) and bias vectors ($\mathbf{b}$). These are automatically adjusted by the Backpropagation algorithm during training.
+    \item \textbf{Hyperparameters (Set by the human):} The architectural design choices made \textit{before} training begins. This includes the number of hidden layers, the number of neurons in each layer, the learning rate, and the choice of activation functions (e.g., ReLU vs. Sigmoid).
 \end{itemize}
 
-The flattening process (from a $28 \times 28$ grid to a 784-element vector) is simply a rearrangement.
-Although the two-dimensional spatial layout is no longer explicit, the network can still discover
-the relevant patterns because the pixel values and their relative positions (encoded by their
-index in the vector) remain unchanged.
 
-%----------------------------------------------------------
-\subsubsection{Algebraic Description of a Fully Connected Network}
-%----------------------------------------------------------
 
-We now describe the mathematics that governs how data flows through the network.
 
-\begin{defbox}{Notation for Layers, Activations, and Weights}
-\begin{itemize}
-    \item Let $L^{h}$, $h = 1, \dots, M$, denote the hidden layers of the network.
-    \item The \textbf{activation vector} of layer $L^h$ is the column vector:
-          \[
-              \mathbf{a}^{h} = \bigl(a_1^{h},\; a_2^{h},\; \dots,\; a_{p_h}^{h}\bigr)^\top,
-          \]
-          where $p_h$ is the number of neurons in layer $h$.
-    \item The \textbf{weight matrix} connecting layer $L^h$ to layer $L^{h+1}$ is denoted $\mathbf{W}^{(h)}$.
-          It is a $p_{h+1} \times p_h$ matrix whose element $w_{ij}^{(h)}$ is the weight from neuron $j$
-          in layer $h$ to neuron $i$ in layer $h+1$.
-    \item The \textbf{bias vector} for layer $h+1$ is $\mathbf{w}_0^{h}$.
-\end{itemize}
-\end{defbox}
 
-\paragraph{Preactivation and Activation.}
-For each neuron $i$ in layer $h+1$, we first compute the \textbf{preactivation} (also called the
-\emph{weighted input}):
-\[
-    z_i^{(h+1)} = \sum_{j=0}^{p_h} w_{ij}^{(h)}\, a_j^{(h)},
-\]
-where the sum from $j=0$ includes the bias term (with $a_0^{(h)} = 1$ by convention).
-
-Then, a non-linear, differentiable function $\sigma$ --- the \textbf{activation function} --- is applied
-element-wise to obtain the activation of each neuron:
-\[
-    a_i^{(h+1)} \equiv \sigma\!\bigl(z_i^{(h+1)}\bigr).
-\]
-
-\paragraph{Matrix form.}
-Writing this for all neurons simultaneously, we get the compact matrix equation:
-
-\begin{defbox}{Fundamental Equation of a Feed-Forward Layer}
-\[
-    \mathbf{a}^{(h+1)} = \sigma\!\bigl(\mathbf{W}^{(h)} \cdot \mathbf{a}^{(h)} + \mathbf{w}_0^{h}\bigr),
-\]
-where $\sigma$ is applied \textbf{element-wise} to the resulting vector.
-\end{defbox}
-
-In full matrix notation (absorbing the bias into the weight matrix by appending a column
-and adding a constant entry $a_0^{(h)} = 1$ to the activation vector):
-
-\[
-\sigma\!\left(
-\begin{bmatrix}
-a_1^{(h)} \\ \vdots \\ a_{p_h}^{(h)} \\ a_0^{(h)}
-\end{bmatrix}
-\times
-\begin{bmatrix}
-w_{11}^{(h)} & w_{12}^{(h)} & \cdots & w_{1,p_h}^{(h)} & w_{0}^{(h)} \\
-w_{21}^{(h)} & w_{22}^{(h)} & \cdots & w_{2,p_h}^{(h)} & w_{0}^{(h)} \\
-\vdots & \vdots & \ddots & \vdots & \vdots \\
-w_{p_{h+1},1}^{(h)} & w_{p_{h+1},2}^{(h)} & \cdots & w_{p_{h+1},p_h}^{(h)} & w_{0}^{(h)}
-\end{bmatrix}
-\right)
-=
-\begin{bmatrix}
-a_1^{(h+1)} \\ \vdots \\ a_{p_{h+1}}^{(h+1)}
-\end{bmatrix}.
-\]
-
-This single equation is, in essence, the \emph{entire mathematics} of neural networks.
-Every layer performs the same operation: a matrix multiplication followed by an
-element-wise non-linear function.
-
-\paragraph{Recursive description of the full network.}
-Consider an MLP with 1 input layer, $L-1$ hidden layers, and 1 output layer.
-Let $\mathbf{x} \in \mathbb{R}^n$ be the input vector and $\mathbf{o} \in \mathbb{R}^m$ the output vector.
-Define the pre-activation vector $\mathbf{z}^{h+1} \equiv \mathbf{W}^{h}\,\mathbf{a}^{h} + \mathbf{w}_0^{h}$.
-Then the network operates as:
-
-\begin{align}
-    \mathbf{a}^{1}   &= \sigma_1\!\bigl(\mathbf{z}^{(0)}\bigr), \label{eq:first_layer}\\[4pt]
-    \mathbf{a}^{h+1} &= \sigma_{h+1}\!\bigl(\mathbf{z}^{h}\bigr),
-                        \quad \forall\, h \in \{1, \dots, L-1\}, \label{eq:hidden_layers}\\[4pt]
-    \mathbf{O}        &= \sigma_L\!\bigl(\mathbf{z}^{L-1}\bigr). \label{eq:output_layer}
-\end{align}
-
-In principle, each layer can use a different activation function $\sigma_h$.
-In practice, hidden layers usually share the same activation function
-($\sigma_1 = \sigma_2 = \cdots = \sigma_{L-1}$, e.g.\ ReLU or sigmoid), while the
-output layer uses a different one ($\sigma_L$, e.g.\ softmax for classification).
-
-Putting it all together, the entire network can be written as a composition of functions:
-
-\begin{defbox}{Neural Network as Function Composition}
-\[
-    \mathbf{O} = \sigma_L\!\Bigl(\sigma_{L-1}\!\bigl(\cdots \sigma_1\!\bigl(\mathbf{W}^{(1)}\,\mathbf{x}\bigr)\cdots\bigr)\Bigr).
-\]
-A neural network is nothing more than a succession of activation functions applied
-point-wise to vectors that are produced by successive matrix multiplications.
-\end{defbox}
 
 %==========================================================
-\subsection{Universal Approximation Theorems}
+\subsubsection{Universal Approximation Theorems}
 %==========================================================
 
-A natural question arises: can a neural network actually learn any function we want?
-The \textbf{Universal Approximation Theorems} provide a positive (but limited) answer.
+These theorems provide a mathematical justification for using neural networks, assuring researchers that a sufficiently large or deep network can model the complex, non linear relationships often found in real-world data. 
 
 \begin{defbox}{Universal Approximation Theorem (Hornik et al., 1988)}
 A feed-forward neural network with a single hidden layer and a non-polynomial activation
@@ -591,21 +327,17 @@ There are two flavors of this result:
 
 Both strategies can achieve universal approximation in theory.
 
-\paragraph{Important caveat.}
 These are \textbf{existence theorems}. They guarantee that a network with the right
 structure \emph{exists}, but they say nothing about:
 \begin{itemize}
     \item how many neurons/layers are actually needed,
-    \item how to find the correct values of the weights (i.e.\ they do not provide a training algorithm),
+    \item how to find the correct values of the weights.
     \item whether gradient-based optimization will converge to the optimal solution.
 \end{itemize}
 
-In practice, finding good weights is the hard part --- and that is the job of training
-algorithms like backpropagation combined with gradient descent.
+In practice, finding good weights is the hard part and that is the job of training algorithms like backpropagation combined with gradient descent.
 
-%==========================================================
-\subsection{The Role of Hidden Layers: Abstraction and Feature Hierarchies}
-%==========================================================
+\subsubsection{The Power of Hidden Layers: Feature Hierarchies}
 
 Why do we need hidden layers at all? The answer lies in the concept of \textbf{hierarchical
 abstraction}.
@@ -629,45 +361,271 @@ This principle applies across different data modalities:
           at different levels.
 \end{itemize}
 
-\subsubsection{Example: Decomposing Handwritten Digits}
+\subsection{Analyzing a Simple MLP: The XOR Forward Pass}
 
-Consider the MNIST digit recognition task. Any handwritten digit can be decomposed into a
-set of elementary shapes (strokes, loops, line segments). For example:
+\subsubsection{The XOR Problem Revisited}
+
+The XOR function takes two binary inputs and returns:
 \begin{itemize}
-    \item A ``9'' can be decomposed into a loop (top) and a vertical stroke (bottom).
-    \item An ``8'' can be decomposed into two loops.
-    \item A ``4'' can be decomposed into a vertical stroke, a shorter vertical stroke, and a horizontal bar.
+    \item \(1\) if the two inputs are different,
+    \item \(0\) if the two inputs are equal.
 \end{itemize}
 
-Crucially, some elementary patterns are shared across different digit classes. The loop
-that appears in a ``9'' is similar to the loop in an ``8'' or a ``0''. The network exploits this
-by having hidden neurons that detect these shared primitives, and later layers combine them
-to distinguish between different digits.
+Its truth table is:
+\[
+\begin{array}{c|c|c}
+A & B & A \oplus B \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0
+\end{array}
+\]
 
-In terms of neuron activations, similar shapes in the input produce similar firing patterns
-in the hidden layers. This is precisely what we mean by the network learning
-\emph{internal representations}.
 
-\subsubsection{A Visual Interpretation}
-
-In the MNIST network (784 input neurons, several hidden layers, 10 output neurons),
-the last hidden layer before the output can be thought of as containing neurons that
-each represent a specific elementary shape (e.g.\ a loop, a stroke, a curve).
-The output neurons then combine these shape detectors to decide which digit is present.
-
-This layered decomposition --- from raw pixels to edges to shapes to digits --- is the
-fundamental reason why deep networks are so powerful. Each layer performs a relatively
-simple transformation, but the composition of many such transformations can capture
-extremely complex patterns.
+As previously established, a single linear perceptron cannot solve the XOR logic gate because the data is not linearly separable. To solve it, we must build a \textbf{Multi-Layer Perceptron (MLP)} with at least one hidden layer. 
 
 
 
-\begin{comment}
-         \begin{figure}[H] 
-        \centering\includegraphics[scale=0.65]{4.Airline Time Series.jpg}
-        \caption{Airline Passengers Time Series}
-    \captionsetup{font=footnotesize}
-    \end{figure}
-\end{comment}
+\subsubsection{Network Architecture \& Dimensionality}
+Understanding matrix dimensions is the most critical skill for coding neural networks. Our XOR network is structured as follows:
+
+
+\begin{figure}[H] 
+    \centering\includegraphics[scale=0.5]{8.Schematic layout of MLP.jpeg}
+    \caption{Schematic layout of MLP}
+\captionsetup{font=footnotesize}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Input ($X$):} 1 sample with 2 features. Dimension = $(1 \times 2)$.
+    \item \textbf{Hidden Layer ($h_1$):} We choose 3 neurons. To get from 2 inputs to 3 neurons, our first weight matrix ($W_1$) must have the dimension $(2 \times 3)$.
+    \item \textbf{Output Layer ($h_2$):} We need 2 outputs (for our one-hot classes). To get from 3 hidden neurons to 2 outputs, our second weight matrix ($W_2$) must be $(3 \times 2)$.
+\end{itemize}
+
+
+
+
+\subsubsection{The Forward Pass: Step-by-Step}
+We will trace a single input vector $X = [1.76, 0.40]$ through the network to see how it transforms. (Note: Initial weights are chosen randomly).
+
+\paragraph*{Step 1: Input to Hidden Layer (Linear)}.
+We calculate the pre-activation $z_1$ by multiplying the input by the first weight matrix:
+\[ z_1 = X \cdot W_1 \]
+\[ (1 \times 2) \cdot (2 \times 3) \rightarrow \text{Resulting dimension is } (1 \times 3) \]
+\textit{Data Science Takeaway:} The network has mathematically projected our 2D input into a new, 3-dimensional internal feature space.
+
+\paragraph*{Step 2: Hidden Layer Activation (Non-Linear)}.
+We apply the \textbf{Sigmoid Function} $\sigma(x) = \frac{1}{1+e^{-x}}$ element-wise to $z_1$. This squishes all three values into a range between 0 and 1, providing the crucial non-linearity. 
+\[ h_1 = \sigma(z_1) = [0.19, \;\; 0.71, \;\; 0.48] \]
+
+\paragraph*{Step 3: Hidden to Output Layer (Linear)}.
+We take our new 3D feature vector ($h_1$) and multiply it by the second weight matrix to calculate the final pre-activation $z_2$:
+\[ z_2 = h_1 \cdot W_2 \]
+\[ (1 \times 3) \cdot (3 \times 2) \rightarrow \text{Resulting dimension is } (1 \times 2) \]
+The result is $z_2 = [-0.52, \;\; -0.18]$. These are our raw output scores (logits).
+
+\paragraph*{Step 4: Output Activation (Softmax)}.
+We have two raw scores, but we want probabilities that sum to 100\% (1.0). We apply the \textbf{Softmax Function}:
+\[ \text{Softmax}(z_i) = \frac{e^{z_i}}{\sum e^{z_j}} \]
+\[ h_2 = \text{Softmax}([-0.52, -0.18]) = [0.37, \;\; 0.45] \text{ (Simplified for example)} \]
+
+
+The network took the input $[1.76, 0.40]$ and predicted that it is roughly a 37\% match for Class 0, and a 45\% match for Class 1. 
+
+Because the weights were initialized randomly, this prediction is essentially garbage. To make it accurate, the network would now calculate the Error (Loss) between this prediction and the true One-Hot target, and use \textbf{Backpropagation} to adjust $W_1$ and $W_2$.
+
+\subsubsection{Why This Example Is Important}
+
+This example is small, but it shows the essential logic of neural networks:
+\begin{itemize}
+    \item the input is multiplied by a weight matrix,
+    \item the result is transformed through a non-linear activation function,
+    \item the hidden representation is passed to another layer,
+    \item the final output is converted into a probability-like vector.
+\end{itemize}
+
+Even though the network is simple, all larger MLPs work in the same general way.
+
+
+\subsection{Backpropagation: The Backward Pass}
+
+\subsubsection{The Goal of Backpropagation}
+While the Forward Pass makes a prediction, the \textbf{Backward Pass} calculates exactly how wrong that prediction is and updates the network's weights to improve the next prediction. 
+
+The algorithm that dictates this process is called \textbf{Backpropagation}. It computes the \textit{gradient} of the Loss function with respect to every single weight in the network, moving from the output layer backwards to the input layer.
+
+\subsubsection{The Loss Function and Regularization}
+Before we can backpropagate, we need to mathematically define our error using a \textbf{Loss Function} ($\mathcal{L}$). We can use as example Mean Squared Error (MSE) combined with Ridge ($\mathcal{L}^2$) Regularization:
+
+\[
+\mathcal{L} = \frac{1}{2N}\sum_{i=0}^{N}(y_i - h_{2i})^2 + \frac{\lambda}{2N}\sum_{j=0}^{M} W_j^2
+\]
+
+\begin{itemize}
+    \item \textbf{Data Fitting Term (Left):} Measures the distance between the network's prediction ($h_2$) and the true label ($y$).
+    \item \textbf{Regularization Term (Right):} Penalizes excessively large weights to prevent overfitting, controlled by the parameter $\lambda$.
+\end{itemize}
+
+\paragraph*{Step 1: Updating the Output Layer ($W_2$)}.
+To update the weights connecting the hidden layer to the output layer ($W_2$), we must find the gradient $\frac{\partial \mathcal{L}}{\partial W_2}$. Because the network is a composite function ($h_1 \rightarrow z_2 \rightarrow h_2 \rightarrow \mathcal{L}$), we use the \textbf{Chain Rule}:
+
+\[
+\frac{\partial \mathcal{L}}{\partial W_2} = \frac{\partial \mathcal{L}}{\partial h_2} \cdot \frac{\partial h_2}{\partial z_2} \cdot \frac{\partial z_2}{\partial W_2}
+\]
+
+\begin{enumerate}
+    \item \textbf{Loss Derivative} ($\frac{\partial \mathcal{L}}{\partial h_2}$): How the loss changes with respect to the final prediction.
+    \item \textbf{Activation Derivative} ($\frac{\partial h_2}{\partial z_2}$): The slope of the Softmax/Sigmoid function.
+    \item \textbf{Input Derivative} ($\frac{\partial z_2}{\partial W_2}$): The input to this layer, which is simply the activation of the previous hidden layer ($h_1$).
+\end{enumerate}
+
+Once we multiply these three terms together to get the gradient matrix, we apply \textbf{Gradient Descent} to update the weights, stepping in the opposite direction of the gradient by a factor of the learning rate ($\alpha$):
+
+\[
+W_2^{*} = W_2 - \alpha \frac{\partial \mathcal{L}}{\partial W_2}
+\]
+
+\paragraph*{Step 2: Updating the Hidden Layer ($W_1$)}.
+Now we move backwards to the first weight matrix ($W_1$). The chain rule gets longer:
+
+
+\begin{align*}
+\frac{d\mathcal{L}}{dW_1}
+&=
+\frac{d\mathcal{L}}{dh_1}
+\frac{dh_1}{dz_1}
+\frac{dz_1}{dW_1}
+\\[8pt]
+\frac{d\mathcal{L}}{dh_1}
+&=
+\frac{d\mathcal{L}}{dz_2}
+\frac{dz_2}{dh_1}
+=
+\frac{d\mathcal{L}}{dh_2}
+\frac{dh_2}{dz_2}
+\frac{dz_2}{dW_2}
+\end{align*}
+
+
+\[
+\frac{\partial \mathcal{L}}{\partial W_1} = \left( \frac{\partial \mathcal{L}}{\partial h_2} \cdot \frac{\partial h_2}{\partial z_2} \cdot \frac{\partial z_2}{\partial h_1} \right) \cdot \frac{\partial h_1}{\partial z_1} \cdot \frac{\partial z_1}{\partial W_1}
+\]
+
+\vspace{0.25cm}
+\textbf{Crucial Data Science Concept: Gradient Reuse}\\
+Notice that the first two terms ($\frac{\partial \mathcal{L}}{\partial h_2} \cdot \frac{\partial h_2}{\partial z_2}$) are the exact same derivatives we calculated for $W_2$. The absolute genius of the Backpropagation algorithm is that \textbf{we do not recompute them}. We store the gradients from the later layers and reuse them for the earlier layers. This makes training deep networks computationally efficient.
+
+Once the full gradient is calculated, we update the first matrix just like the second:
+\[
+W_1^{*} = W_1 - \alpha \frac{\partial \mathcal{L}}{\partial W_1}
+\]
+
+\paragraph*{Conclusion of the Training Step}.
+By updating $W_2$ and then $W_1$, the network has completed one full learning cycle. The next time the identical input $X$ is passed forward, the new weights ($W_1^*$ and $W_2^*$) will produce an output that is slightly closer to the true target $Y$, resulting in a smaller Loss.
+
+\subsection{The XOR Operator and General MLP Terminology}
+
+\subsubsection{Why XOR Proves the Need for MLPs}
+As demonstrated in the previous forward-pass example, the \textbf{XOR} (Exclusive OR) logical function cannot be solved by a single linear classifier because the classes are not linearly separable. 
+
+This classical problem proved that artificial intelligence requires two things to solve complex real-world problems:
+\begin{enumerate}
+    \item \textbf{Hidden Layers:} To project the input data into a new, higher-dimensional space where the classes \textit{can} be separated.
+    \item \textbf{Non-Linear Activation Functions:} To ensure that the multiple layers do not mathematically collapse back into a single linear equation.
+\end{enumerate}
+
+\subsubsection{The Multi-Layer Perceptron (MLP)}
+An MLP is the simplest and most foundational type of Artificial Neural Network (ANN). It is a \textbf{Feed-Forward Network}, meaning data only moves in one direction (from left to right) without any loops or feedback cycles.
+
+\vs
+\textbf{Structural Terminology}
+\begin{itemize}
+    \item \textbf{Neuron (Node):} The basic computational unit. It takes inputs, multiplies them by weights, adds a bias, and passes the sum through an activation function to produce a single scalar output.
+    \item \textbf{Layer:} A vertical column of neurons that operate in parallel. Neurons within the same layer do \textit{not} connect to each other.
+    \item \textbf{Hidden Layer:} Any intermediate layer between the input and the output. It is "hidden" because the user never directly sees its values; it creates internal representations of the data.
+    \item \textbf{Weights:} The numerical parameters connecting neurons across layers. \textit{These are the unknown variables that the network must learn.}
+\end{itemize}
+
+\begin{figure}[H] 
+    \centering\includegraphics[scale=0.5]{9.Multi Layer Perceptron.jpeg}
+    \caption{Multi Layer Perceptron}
+\captionsetup{font=footnotesize}
+\end{figure}
+
+\subsubsection{The Knowledge Base: Managing Data in Machine Learning}
+In Supervised Learning, the network learns from a \textbf{Knowledge Base}: a dataset containing input \textbf{Features} ($X$) paired with correct \textbf{Targets} ($Y$).
+
+To properly train and evaluate a model without bias, a Data Scientist must split this knowledge base into three distinct subsets:
+
+\begin{enumerate}
+    \item \textbf{Training Set:} The data used to actually teach the model. The network makes predictions on this data, calculates the Cost (Loss) Function, and updates its weights via Backpropagation.
+    \item \textbf{Validation Set:} A separate dataset used \textit{during} development. The model is evaluated on this set to help the data scientist tune \textbf{hyperparameters} (like learning rate or number of layers) and check for overfitting. The model does \textit{not} update its weights based on this data.
+    \item \textbf{Test Set:} The final, untouched dataset. It is used only once at the very end of the project to evaluate how well the fully trained model \textbf{generalizes} to completely new, unseen data.
+\end{enumerate}
+
+\textbf{The Golden Rule of Data Science:} Never, under any circumstances, allow your model to train on or see the Test Set during the development phase.
+
+\subsection{The Supervised Learning Workflow}
+
+\subsubsection{The Machine Learning Pipeline}
+Supervised learning is not just about the math of a neural network; it is a structured engineering pipeline. The workflow is divided into two distinct phases:
+
+\pagebreak
+\textbf{Phase 1: Training (Learning)}
+\begin{enumerate}
+    \item \textbf{Data Prep \& Split:} Collect a labeled \textit{Knowledge Base} and split it into a Training Set and a Test Set.
+    \item \textbf{Normalization:} Rescale the input features (e.g., pixel values) to a standard range, usually between 0 and 1. This prevents large numbers from destabilizing the math.
+    \item \textbf{Initialization:} Assign small, random starting values to all weights and biases. (If all weights started at 0, every neuron would learn the exact same thing).
+    \item \textbf{Forward Pass:} Pass a batch of training data through the network to get a prediction.
+    \item \textbf{Cost Calculation:} Use a Cost (Loss) Function to measure how wrong the prediction is compared to the true label.
+    \item \textbf{Backpropagation \& Optimization:} Calculate the gradients and update the weights to reduce the error.
+    \item \textbf{Iteration:} Repeat steps 4-6 thousands of times over the training set until a \textbf{Stopping Criterion} is met (e.g., the loss stops decreasing).
+\end{enumerate}
+
+\textbf{Phase 2: Inference (Production)}
+Once the stopping criterion is met, training ends. The weights are locked in place, and the model is considered \textbf{frozen}. In the Inference phase, the frozen model is exposed to completely new, unseen data (the Test Set or real-world user data) to make final predictions.
+
+\begin{figure}[H] 
+    \centering\includegraphics[scale=0.45]{10.Supervised Classification problem.jpeg}
+    \caption{Supervised Classification problem}
+\captionsetup{font=footnotesize}
+\end{figure}
+
+\subsubsection{Case Study: The MNIST Digit Classifier}
+To make this abstract pipeline concrete, consider the classic "Hello World" of Deep Learning: classifying handwritten digits (0-9) from the MNIST dataset.
+
+\paragraph*{Data Representation.}
+Each MNIST image is a $28 \times 28$ pixel grayscale image. To feed this into a standard Feed-Forward network, the 2D image is \textit{flattened} into a single 1D vector of $784$ pixels.
+
+\paragraph*{Network Architecture.}
+The lecture proposes a specific architecture to solve this:
+\[ 784 \text{ (Input)} \rightarrow 16 \text{ (Hidden)} \rightarrow 16 \text{ (Hidden)} \rightarrow 10 \text{ (Output)} \]
+\begin{itemize}
+    \item \textbf{Input Layer:} 784 neurons, one for each pixel.
+    \item \textbf{Hidden Layers:} Two hidden layers with 16 neurons each to learn the shapes and curves of the numbers.
+    \item \textbf{Output Layer:} 10 neurons, representing the probability of the image being the digit 0, 1, 2... up to 9. The neuron that "fires" the highest is the network's prediction.
+\end{itemize}
+
+\paragraph*{The Scale of Optimization.}
+Even for this incredibly small, simple toy network, the math scales massively. 
+\begin{itemize}
+    \item Weights between Input and Hidden 1: $784 \times 16$
+    \item Weights between Hidden 1 and Hidden 2: $16 \times 16$
+    \item Weights between Hidden 2 and Output: $16 \times 10$
+    \item Plus the biases for each layer ($16 + 16 + 10$)
+\end{itemize}
+Total Parameters to learn: \textbf{13,002}. 
+
+\begin{figure}[H] 
+    \centering\includegraphics[scale=0.45]{11.The MNIST Digit Classifier.jpeg}
+    \caption{The MNIST Digit Classifier}
+\captionsetup{font=footnotesize}
+\end{figure}
+
+Training this network means finding the exact configuration of those 13,002 numbers that results in the lowest possible cost function. This is why automated algorithms like Backpropagation and powerful hardware like GPUs are absolutely mandatory for modern AI.
+
+
 
   \end{document}

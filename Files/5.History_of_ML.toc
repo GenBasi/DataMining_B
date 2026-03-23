@@ -14,7 +14,7 @@
 \contentsline {subsection}{\numberline {1.6}The First Neural Winter \& The XOR Problem}{6}{subsection.1.6}%
 \contentsline {subsection}{\numberline {1.7}The XOR Problem: The Limit of Linear Inseparability}{6}{subsection.1.7}%
 \contentsline {subsubsection}{\numberline {1.7.1}The Differentiability Crisis}{7}{subsubsection.1.7.1}%
-\contentsline {subsubsection}{\numberline {1.7.2}Sparks in the Winter: Early Deep Learning}{8}{subsubsection.1.7.2}%
+\contentsline {subsubsection}{\numberline {1.7.2}Sparks in the Winter: Early Deep Learning}{7}{subsubsection.1.7.2}%
 \contentsline {subsection}{\numberline {1.8}The End of the First Winter}{8}{subsection.1.8}%
 \contentsline {subsubsection}{\numberline {1.8.1}Self-Organizing Maps (SOMs) - Kohonen, 1982}{8}{subsubsection.1.8.1}%
 \contentsline {paragraph}{Why SOMs are useful}{8}{section*.3}%
