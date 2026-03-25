@@ -1,11 +1,26 @@
-\contentsline {section}{\numberline {1}sommario}{3}{section.1}%
-\contentsline {section}{\numberline {2}Gradient Descent and Backpropagation}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}The Geometry of Optimization}{4}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}The Reality of the Loss Landscape.}{4}{subsubsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.2}Different paths toward the minimum.}{5}{subsubsection.2.1.2}%
-\contentsline {subsubsection}{\numberline {2.1.3}Visualizing the Loss Landscape: Filter Normalization}{6}{subsubsection.2.1.3}%
-\contentsline {subsection}{\numberline {2.2}The Mathematics of Gradient Descent}{6}{subsection.2.2}%
-\contentsline {paragraph}{ Link between \(\Delta C\) and \(\Delta w\).}{7}{section*.5}%
-\contentsline {subsubsection}{\numberline {2.2.1}When to Stop Training (Convergence vs. Overfitting)}{8}{subsubsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.3}Stochastic Gradient Descent (SGD)}{9}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Terminology of SGD}{9}{subsubsection.2.3.1}%
+\contentsline {section}{\numberline {1}Gradient Descent and Backpropagation}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Geometry of Optimization}{3}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}The Reality of the Loss Landscape.}{3}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Different paths toward the minimum.}{4}{subsubsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.1.3}Visualizing the Loss Landscape: Filter Normalization}{5}{subsubsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.2}The Mathematics of Gradient Descent}{5}{subsection.1.2}%
+\contentsline {paragraph}{ Link between \(\Delta C\) and \(\Delta w\).}{6}{section*.5}%
+\contentsline {subsubsection}{\numberline {1.2.1}When to Stop Training (Convergence vs. Overfitting)}{7}{subsubsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.3}Stochastic Gradient Descent (SGD)}{8}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Terminology of SGD}{8}{subsubsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.4}Backpropation Method}{8}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}The Computational Graph}{9}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Standard Mathematical Notation}{9}{subsubsection.1.4.2}%
+\contentsline {subsubsection}{\numberline {1.4.3}The Two Assumptions of the Cost (Loss) Function}{9}{subsubsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.5}The Four Fundamental Equations of Backpropagation}{10}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}The Concept of "Neuron Error" ($\delta $)}{10}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}BP1: Error in the Output Layer}{10}{subsubsection.1.5.2}%
+\contentsline {subsubsection}{\numberline {1.5.3}BP2: Propagating the Error Backward (Hidden Layers)}{10}{subsubsection.1.5.3}%
+\contentsline {subsubsection}{\numberline {1.5.4}BP3: Derivative of the Cost with Respect to Biases}{11}{subsubsection.1.5.4}%
+\contentsline {subsubsection}{\numberline {1.5.5}BP4: Derivative of the Cost with Respect to Weights}{11}{subsubsection.1.5.5}%
+\contentsline {subsubsection}{\numberline {1.5.6}The Complete Algorithm Summary}{11}{subsubsection.1.5.6}%
+\contentsline {subsection}{\numberline {1.6}Implications of Backpropagation: Learning Dynamics and Bottlenecks}{11}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Learning Speed and Gradient Magnitude}{11}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}The Saturation Problem}{12}{subsubsection.1.6.2}%
+\contentsline {subsubsection}{\numberline {1.6.3}The Vanishing Gradient Problem in Deep Networks}{12}{subsubsection.1.6.3}%
+\contentsline {subsubsection}{\numberline {1.6.4}The Complete Training Loop (Stochastic Gradient Descent)}{12}{subsubsection.1.6.4}%

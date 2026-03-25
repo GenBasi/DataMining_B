@@ -188,70 +188,6 @@
 \pagebreak
 
 
-\section{sommario}
-
-\begin{itemize}
-   
-
-    \item \textbf{Backpropagation: concetti fondamentali}
-    \begin{itemize}
-        \item Introduzione alla sezione sul backpropagation algorithm (slide 19)
-        \item Definizione, ruolo storico e collegamento con automatic differentiation (slide 20)
-        \item Forward phase e backward phase nelle reti neurali viste come computational graphs (slide 21)
-    \end{itemize}
-
-    \item \textbf{Notazione matematica per la backpropagation}
-    \begin{itemize}
-        \item Attivazioni dei neuroni in forma scalare e matriciale (slide 22)
-        \item Weighted input $z^l$, relazione tra $z^l$ e $a^l$ (slide 23)
-        \item Assunzioni sulla cost function necessarie per applicare backpropagation (slide 24)
-        \item Giustificazione della prima assunzione e passaggio al singolo training example (slide 25)
-        \item Esempio con quadratic cost function e verifica delle assunzioni (slide 26)
-    \end{itemize}
-
-    \item \textbf{Le quattro equazioni fondamentali della Backpropagation}
-    \begin{itemize}
-        \item Introduzione alla sezione sulle quattro equazioni fondamentali (slide 27)
-        \item Definizione dell’errore del neurone $\delta_j^l$ (slide 28)
-        \item BP1: errore nello strato di output (slide 29)
-        \item Forma matriciale di BP1 e caso della quadratic cost (slide 30)
-        \item Dimostrazione di BP1 tramite chain rule (slide 31)
-        \item BP2: propagazione dell’errore allo strato precedente (slide 32)
-        \item BP3: derivata della cost rispetto ai bias (slide 33)
-        \item BP4: derivata della cost rispetto ai pesi (slide 34)
-        \item Riassunto compatto delle quattro equazioni BP1--BP4 (slide 35)
-    \end{itemize}
-
-    \item \textbf{Implicazioni della Backpropagation e dinamica dell’apprendimento}
-    \begin{itemize}
-        \item Conseguenze pratiche delle equazioni BP: neuroni saturi, gradienti piccoli, apprendimento lento (slide 36)
-        \item Algoritmo completo della backpropagation passo per passo (slide 37)
-    \end{itemize}
-
-    \item \textbf{Combinare Gradient Descent e Backpropagation}
-    \begin{itemize}
-        \item Introduzione alla sezione sulla combinazione GD + BP (slide 38)
-        \item Procedura pratica per combinare feedforward, backpropagation e gradient descent su mini-batch (slide 39)
-    \end{itemize}
-
-    \item \textbf{Interpretazione intuitiva della Backpropagation e problemi dei gradienti}
-    \begin{itemize}
-        \item Logica intuitiva della BP: come una piccola variazione di un peso influenza la cost (slide 40)
-        \item Propagazione delle variazioni attraverso le attivazioni del layer successivo (slide 41)
-        \item Somma dei contributi lungo tutti i possibili cammini nella rete (slide 42)
-        \item Espansione della chain rule lungo un intero percorso dalla weight alla cost (slide 43)
-        \item Vanishing gradient problem e impatto sull’aggiornamento dei pesi (slide 44)
-        \item Altri problemi dell’addestramento profondo: exploding gradients, difficoltà di convergenza, minimi spurii (slide 45)
-    \end{itemize}
-
-    \item \textbf{Esercizi finali}
-    \begin{itemize}
-        \item Esercizi su dimostrazione di BP2, BP3, BP4 e varianti della backpropagation (slide 46)
-    \end{itemize}
-\end{itemize}
-
-\pagebreak
-
 \section{Gradient Descent and Backpropagation}
 
 \subsection{The Geometry of Optimization}
@@ -538,6 +474,181 @@ The practical algorithm used in mini-batch learning can be summerized like:
 \end{itemize}
 
 
+
+
+\subsection{Backpropation Method}
+As established, \textbf{Backpropagation} calculates the gradient of the Loss function with respect to the network's weights and biases, allowing us to update them via Gradient Descent. 
+
+Historically, backpropagation is a specific application of \textbf{Reverse-Mode Automatic Differentiation}. Popularized in 1986 by Rumelhart, Hinton, and Williams, it is the algorithm that single-handedly made the training of deep, multi-layer neural networks computationally feasible.
+
+\subsubsection{The Computational Graph}
+A neural network is best understood mathematically as a \textbf{Computational Graph}: a massive composite function broken down into a sequence of smaller, trackable operations. This allows us to split the training process into two phases:
+\begin{enumerate}
+    \item \textbf{Forward Phase:} The input flows left-to-right through the graph to compute the final prediction and the Loss.
+    \item \textbf{Backward Phase:} The error flows right-to-left, using the Chain Rule to calculate gradients for every parameter.
+\end{enumerate}
+
+
+\begin{defbox}{Computational Graph}
+A \textbf{computational graph} is a graph representation of a computation, where nodes correspond to operations or variables, and edges represent the flow of values between them.
+\end{defbox}
+
+
+\subsubsection{Standard Mathematical Notation}
+To perform backpropagation on a large scale, we must use precise notation. Let $l$ denote the current layer, and $l-1$ the previous layer. 
+
+The calculation for a layer is split into two distinct variables: the linear \textbf{Weighted Input} ($z$) and the non-linear \textbf{Activation} ($a$).
+
+\vspace{-0.2cm}
+\paragraph*{1. The Weighted Input ($z$).}
+Before applying the activation function, we calculate the raw linear combination of the previous layer's outputs. For a single neuron $j$ in layer $l$:
+\begin{equation}
+    z_j^l = \sum_k w_{jk}^{l} a_k^{l-1} + b_j^l
+\end{equation}
+In compact vector/matrix notation for the entire layer:
+\begin{equation}
+    \mathbf{z}^{l} = (\mathbf{W}^{l})^{T} \mathbf{a}^{l-1} + \mathbf{b}^{l}
+\end{equation}
+
+\vspace{-0.2cm}
+\paragraph*{2. The Activation ($a$)}
+We then apply the non-linear activation function ($\sigma$) element-wise to the weighted input:
+\begin{equation}
+    \mathbf{a}^{l} = \sigma(\mathbf{z}^{l})
+\end{equation}
+\textit{Why separate them?} During the backward phase, we will need to calculate the derivative of the activation function with respect to its input. Explicitly defining $\mathbf{z}^{l}$ makes calculating $\frac{\partial \mathbf{a}}{\partial \mathbf{z}}$ mathematically cleaner.
+
+\begin{defbox}{Activation of a Neuron}
+The \textbf{activation} of a neuron is the output value produced by applying the activation function to the weighted sum of the inputs plus the bias.
+\end{defbox}
+
+\subsubsection{The Two Assumptions of the Cost (Loss) Function}
+For the backpropagation algorithm to work, the chosen Cost Function ($C$) must strictly satisfy two mathematical assumptions:
+
+\begin{enumerate}
+\item \textbf{It must be an average of individual examples}
+
+
+The total cost must be the average of the costs calculated for individual training examples ($x$):
+\begin{equation*}
+    C = \frac{1}{n} \sum_x C_x
+\end{equation*}
+\textit{Why?} This allows the algorithm to calculate the gradient for a single training example ($C_x$) first, and then average the gradients across a batch of data.
+
+\vspace{0.25cm}
+\item \textbf{ It must be a function of the network's output}
+
+The cost must be calculable using only the target labels and the final activation vector of the output layer ($a^L$).
+\textit{Why?} Because backpropagation applies the Chain Rule starting from the very end of the network. If the cost function did not explicitly depend on the final output $a^L$, we could not calculate the first required derivative ($\frac{\partial C}{\partial a^L}$).
+\end{enumerate}
+
+\vs
+\begin{example}{\textbf{The Quadratic Cost Function (MSE)}}
+
+The classic Mean Squared Error (MSE) function perfectly satisfies both assumptions. 
+\begin{equation}
+    C = \frac{1}{2n}\sum_x \left\| y(x) - a^L(x) \right\|^2
+\end{equation}
+\begin{itemize}
+    \item It satisfies Assumption 1 because the $\sum_x$ averages the errors over $n$ examples.
+    \item It satisfies Assumption 2 because the error is directly calculated using $a^L(x)$, the network's final output.
+\end{itemize}
+\end{example}
+
+\subsection{The Four Fundamental Equations of Backpropagation}
+
+\subsubsection{The Concept of "Neuron Error" ($\delta$)}
+To compute the gradients efficiently without doing redundant calculus for every single parameter, backpropagation introduces an intermediate variable called the \textbf{Neuron Error}, denoted by $\delta_j^l$ (the error of neuron $j$ in layer $l$).
+
+Mathematically, it is the partial derivative of the Cost function with respect to the neuron's \textit{weighted input} ($z$):
+\[ \delta_j^l = \frac{\partial C}{\partial z_j^l} \]
+
+If this error term is large, changing the neuron's input will drastically change the final cost. If it is close to zero, the neuron is already optimized (or saturated). The entire backpropagation algorithm is simply the process of calculating this $\delta$ for the output layer, passing it backwards, and using it to update the weights and biases.
+
+\subsubsection{BP1: Error in the Output Layer}
+The first step is to calculate the error at the very end of the network (Layer $L$).
+\[ \delta^L = \nabla_{a^L} C \odot \sigma'(z^L) \]
+
+\textbf{What it means:} 
+The error in the output layer is the product of two things:
+\begin{enumerate}
+    \item $\nabla_{a^L} C$: How fast the cost changes with respect to the final prediction (e.g., Prediction minus True Target).
+    \item $\sigma'(z^L)$: The slope of the activation function.
+\end{enumerate}
+The symbol $\odot$ represents the \textbf{Hadamard Product} (element-wise multiplication).
+
+\subsubsection{BP2: Propagating the Error Backward (Hidden Layers)}
+Once we have the error at the output layer, we calculate the error for the hidden layer immediately before it, and so on, moving backwards.
+\[ \delta^l = \left((W^{l+1})^T \delta^{l+1}\right) \odot \sigma'(z^l) \]
+
+\textbf{What it means:} 
+You do not need to recalculate the error from scratch. You take the error from the \textit{next} layer ($\delta^{l+1}$), pull it backwards through the weights connecting them ($(W^{l+1})^T$), and multiply it by the slope of the current layer's activation function ($\sigma'(z^l)$). This is the exact mechanism that allows deep networks to train efficiently.
+
+\subsubsection{BP3: Derivative of the Cost with Respect to Biases}
+Once the neuron error ($\delta$) is calculated for a layer, finding the gradient for the biases is trivial.
+\[ \frac{\partial C}{\partial b_j^l} = \delta_j^l \]
+
+\textbf{What it means:} 
+The gradient of the bias is exactly equal to the neuron's error. If a neuron has a large error, its bias gets updated by a large amount.
+
+\subsubsection{BP4: Derivative of the Cost with Respect to Weights}
+This is the most important equation for understanding how networks learn.
+\[ \frac{\partial C}{\partial w_{jk}^l} = a_k^{l-1} \cdot \delta_j^l \]
+
+\textbf{What it means:} 
+The gradient for any given weight is simply:
+\[ \text{Gradient} = \text{Incoming Activation } (a_{\text{in}}) \times \text{Outgoing Error } (\delta_{\text{out}}) \]
+If the incoming signal to a weight is strong, and the resulting error of the neuron it connects to is large, the weight is heavily responsible for the mistake and will receive a massive update.
+
+\subsubsection{The Complete Algorithm Summary}
+To train a neural network, these four equations are executed in a strict loop:
+\begin{enumerate}
+    \item \textbf{Forward Pass:} Compute all weighted inputs ($z$) and activations ($a$) until you get a prediction.
+    \item \textbf{Output Error (BP1):} Calculate $\delta^L$ at the final layer.
+    \item \textbf{Backpropagate Error (BP2):} Pass the $\delta$ backwards to compute the error for all hidden layers.
+    \item \textbf{Calculate Gradients (BP3 \& BP4):} Use the $\delta$ terms to instantly calculate the gradients for every single bias and weight in the network.
+    \item \textbf{Gradient Descent:} Update the parameters and repeat.
+\end{enumerate}
+
+\subsection{Implications of Backpropagation: Learning Dynamics and Bottlenecks}
+
+\subsubsection{Learning Speed and Gradient Magnitude}
+The equations of Backpropagation (specifically BP4) dictate how fast a network learns.
+\[ \frac{\partial C}{\partial w_{jk}^l} = a_k^{l-1} \cdot \delta_j^l \]
+
+This equation reveals a harsh truth about Gradient Descent: \textbf{The speed at which a parameter learns is directly proportional to the magnitude of its gradient.} If either the incoming activation ($a_{\text{in}}$) or the neuron error ($\delta_{\text{out}}$) is very small, the resulting gradient is tiny. A tiny gradient means a microscopic weight update, causing the network to learn painfully slowly.
+
+\subsubsection{The Saturation Problem}
+Look at the formula for the output error (BP1): 
+\[ \delta^L = \nabla_{a^L} C \odot \sigma'(z^L) \]
+
+The gradient is multiplied by the derivative of the activation function ($\sigma'$). If you use a Sigmoid function, its values are squeezed between 0 and 1. 
+\begin{itemize}
+    \item If the neuron is highly active (output near 1) or highly inactive (output near 0), the curve becomes completely flat.
+    \item A flat curve has a slope (derivative) of roughly $0$.
+\end{itemize}
+When this happens, the neuron is said to be \textbf{saturated}. Because $\sigma'(z) \approx 0$, the entire $\delta$ term becomes $0$. The error signal is \textit{killed,} and the weights connected to that neuron stop updating. \textit{Data Science Takeaway:} This is the exact reason why modern Deep Learning rarely uses Sigmoid for hidden layers, opting for ReLU instead.
+
+\subsubsection{The Vanishing Gradient Problem in Deep Networks}
+The saturation problem compounds geometrically as you build deeper networks. 
+
+According to BP2, the error is passed backwards layer by layer, multiplying by the activation derivative ($\sigma'$) at each step. Because the derivative of a Sigmoid is always less than 0.25, you are repeatedly multiplying by fractions:
+\[ \delta \times 0.2 \times 0.1 \times 0.2 \dots \]
+
+By the time the error signal reaches the very first hidden layers of a deep network, the gradient has shrunk to microscopic levels (e.g., $10^{-15}$). This is the \textbf{Vanishing Gradient Problem}. The early layers of the network, which are responsible for learning foundational features, receive almost no learning signal and fail to train.
+
+\subsubsection{The Complete Training Loop (Stochastic Gradient Descent)}
+ backpropagation alone does not update the weights. It only computes the gradients. To actually learn, it must be combined with an optimization method. To train a model, we combine it with \textbf{Stochastic Gradient Descent (SGD)} using \textbf{Mini-Batches} and \textbf{Epochs}.
+
+\begin{enumerate}
+    \item \textbf{Mini-Batch Selection:} Select a small subset of the training data (e.g., 32 images).
+    \item \textbf{Forward Pass:} Pass all 32 images through the network to calculate predictions.
+    \item \textbf{Calculate Error:} Compute the loss and apply BP1 for the output layer.
+    \item \textbf{Backpropagate:} Apply BP2 to push the error backwards through the hidden layers.
+    \item \textbf{Calculate Gradients:} Apply BP3 and BP4 to find the gradients for all weights and biases.
+    \item \textbf{Average and Update:} Average the 32 gradients together, multiply by the learning rate ($\eta$), and update the actual weights.
+    \item \textbf{Next Batch:} Move to the next batch until the entire dataset has been seen. This completes one \textbf{Epoch}.
+\end{enumerate}
 
 
 \pagebreak
